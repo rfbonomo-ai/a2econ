@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Normal Good — Price Rise | 8edu A2 Economics</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #C9A84C; --gold-l: #E2C270; --gold-d: #7a6230;
+    --bg: #050505; --bg2: #0d0d0d; --bg3: #141414;
+    --border: #1e1e1e; --text: #f0ece4; --muted: #555;
+    --teal: #4ecdc4; --purple: #b07fd4; --green: #6dbf6d;
+  }
+  body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif;
+    min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:24px 16px; }
+  .header { width:100%; max-width:1020px; display:flex; align-items:center;
+    justify-content:space-between; margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--border); }
+  .logo-link { text-decoration:none; display:flex; align-items:center; gap:12px; }
+  .logo-mark { font-family:'Space Mono',monospace; font-size:24px; font-weight:700; color:var(--gold); line-height:1; }
+  .logo-name { font-family:'Space Mono',monospace; font-size:13px; font-weight:700; color:var(--text); letter-spacing:.05em; }
+  .logo-sub { font-size:10px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; }
+  .header-right { text-align:right; }
+  .header-tag { font-family:'Space Mono',monospace; font-size:10px; color:var(--gold); letter-spacing:.15em; text-transform:uppercase; }
+  .header-title { font-size:18px; font-weight:600; color:var(--text); margin-top:3px; }
+  .header-title span { color:var(--gold); }
+  .container { display:flex; gap:24px; align-items:flex-start; max-width:1020px; width:100%; }
+  canvas { background:var(--bg2); border:1px solid var(--border); border-radius:2px; flex-shrink:0; }
+  .panel { flex:1; min-width:250px; }
+  .progress { display:flex; gap:4px; margin-bottom:14px; }
+  .dot { height:3px; flex:1; background:var(--border); border-radius:2px; transition:background .3s; }
+  .dot.done { background:var(--gold-d); }
+  .dot.active { background:var(--gold); }
+  .step-card { background:var(--bg2); border:1px solid var(--border); border-left:2px solid var(--gold-d);
+    border-radius:2px; padding:20px; margin-bottom:14px; min-height:160px; }
+  .step-label { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.15em;
+    color:var(--gold); text-transform:uppercase; margin-bottom:8px; }
+  .step-title { font-size:15px; font-weight:600; color:var(--text); margin-bottom:10px; line-height:1.3; }
+  .step-text { font-size:13px; color:#777; line-height:1.65; }
+  .step-text strong { color:var(--text); }
+  .step-text em { color:var(--gold-l); font-style:normal; }
+  .formula { font-family:'Space Mono',monospace; font-size:12px; color:var(--gold);
+    background:var(--bg3); border:1px solid var(--border); padding:7px 12px;
+    border-radius:2px; margin-top:10px; display:inline-block; }
+  .badges { display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
+  .badge { font-family:'Space Mono',monospace; font-size:9px; padding:4px 8px;
+    border-radius:2px; letter-spacing:.04em; text-transform:uppercase; }
+  .b-se  { background:#0d1f0d; color:#6dbf6d; border:1px solid #1a3a1a; }
+  .b-ie  { background:#1a0d1f; color:#b07fd4; border:1px solid #2d1a3a; }
+  .b-tot { background:#1a1000; color:var(--gold); border:1px solid #3a2800; }
+  .controls { display:flex; gap:10px; }
+  button { font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.06em;
+    padding:11px 18px; border-radius:2px; border:none; cursor:pointer; transition:all .2s; }
+  .btn-next { background:var(--gold); color:#000; font-weight:700; flex:1; }
+  .btn-next:hover:not(:disabled) { background:var(--gold-l); }
+  .btn-next:disabled { background:#1a1a1a; color:#333; cursor:default; }
+  .btn-reset { background:transparent; color:var(--muted); border:1px solid var(--border); }
+  .btn-reset:hover { color:var(--text); border-color:#444; }
+  .footer { margin-top:20px; font-size:11px; color:var(--muted); text-align:center; font-family:'Space Mono',monospace; }
+  .footer a { color:var(--gold-d); text-decoration:none; }
+  .footer a:hover { color:var(--gold); }
+  @media(max-width:720px){ .container{flex-direction:column;} .header{flex-direction:column;gap:12px;text-align:center;} .header-right{text-align:center;} }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <a class="logo-link" href="https://8edu.co.uk" target="_blank">
+    <div class="logo-mark">∞÷8</div>
+    <div>
+      <div class="logo-name">THE EIGHT</div>
+      <div class="logo-sub">8edu.co.uk · A2 Economics</div>
+    </div>
+  </a>
+  <div class="header-right">
+    <div class="header-tag">Indifference Curves · Topic 1</div>
+    <div class="header-title">Normal Good — <span>Price Rise</span></div>
+  </div>
+</div>
+
+<div class="container">
+  <canvas id="cv" width="490" height="490"></canvas>
+  <div class="panel">
+    <div class="progress" id="prog"></div>
+    <div class="step-card">
+      <div class="step-label" id="sLabel">Step 1 of 8</div>
+      <div class="step-title" id="sTitle">–</div>
+      <div class="step-text"  id="sText"></div>
+    </div>
+    <div class="controls">
+      <button class="btn-reset" onclick="doReset()">↺ Restart</button>
+      <button class="btn-next" id="btnNext" onclick="doNext()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Cambridge A2 Economics ·
+  <a href="https://8edu.co.uk" target="_blank">8edu.co.uk</a>
+  · Excellence is Exclusive
+</div>
+
+<script>
+const cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+const W=490,H=490,M=62,PLOT=W-M-22;
+
+// colors
+const GOLD='#C9A84C', GOLDL='#E2C270', TEAL='#4ecdc4',
+      GREEN='#6dbf6d', PURPLE='#b07fd4';
+
+// coord map
+const cx=x=>M+(x/11)*PLOT;
+const cy=y=>(H-M)-(y/11)*PLOT;
+const ease=t=>t<.5?2*t*t:-1+(4-2*t)*t;
+
+// geometry: U=xy, income=10, Px1=1,Px2=2,Py=1
+// E1=(5,5)  E2=(3.536,7.071)  E3=(2.5,5)
+const E1={x:5,y:5}, E2={x:3.536,y:7.071}, E3={x:2.5,y:5};
+
+let step=0, aid=null;
+let D={bl:false,ic1:false,e1:false,comp:false,se:false,ie:false,total:false};
+
+// ---- primitives ----
+function axes(){
+  // subtle grid
+  ctx.strokeStyle='#111'; ctx.lineWidth=0.5;
+  for(let i=1;i<=10;i++){
+    ctx.beginPath(); ctx.moveTo(cx(i),H-M); ctx.lineTo(cx(i),M-10); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(M,cy(i)); ctx.lineTo(W-18,cy(i)); ctx.stroke();
+  }
+  // main axes
+  ctx.strokeStyle='#2a2a2a'; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(M,H-M); ctx.lineTo(W-14,H-M); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(M,H-M); ctx.lineTo(M,14); ctx.stroke();
+  // arrows
+  ctx.fillStyle='#2a2a2a';
+  [[W-14,H-M,W-20,H-M-4,W-20,H-M+4],[M,14,M-4,20,M+4,20]].forEach(([ax,ay,bx,by,cx2,cy2])=>{
+    ctx.beginPath(); ctx.moveTo(ax,ay); ctx.lineTo(bx,by); ctx.lineTo(cx2,cy2); ctx.closePath(); ctx.fill();
+  });
+  // labels
+  ctx.fillStyle='#444'; ctx.font='13px DM Sans'; ctx.textAlign='center';
+  ctx.fillText('Good X',W/2+10,H-8);
+  ctx.save(); ctx.translate(13,H/2); ctx.rotate(-Math.PI/2);
+  ctx.fillText('Good Y',0,0); ctx.restore();
+  ctx.fillStyle='#333'; ctx.font='11px Space Mono'; ctx.textAlign='right';
+  ctx.fillText('O',M-6,H-M+14);
+}
+
+function seg(x0,y0,x1,y1,col,dash,w,p){
+  const ex=x0+(x1-x0)*p, ey=y0+(y1-y0)*p;
+  ctx.strokeStyle=col; ctx.lineWidth=w; ctx.setLineDash(dash);
+  ctx.beginPath(); ctx.moveTo(cx(x0),cy(y0)); ctx.lineTo(cx(ex),cy(ey)); ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function bl(p=1){
+  seg(0,10,10,0,TEAL,[],2.5,p);                          // B1
+  if(p>=0.55) seg(0,10,5,0,GOLD,[],2.5,(p-.55)/.45);     // B2
+  if(p===1){
+    ctx.font='bold 13px Space Mono'; ctx.textAlign='left';
+    ctx.fillStyle=TEAL; ctx.fillText('B₁',cx(10)+5,cy(0)+4);
+    ctx.fillStyle=GOLD; ctx.fillText('B₂',cx(5)+5, cy(0)+4);
+    ctx.fillStyle='#2a2a2a'; ctx.font='10px DM Sans';
+    ctx.textAlign='left'; ctx.fillText('← same Y-intercept',cx(0)+8,cy(10)-10);
+  }
+}
+
+function ic(k,col,p=1){
+  const xm=Math.max(k/10.4,.5), xM=10.2, N=100, tot=Math.floor(N*p);
+  ctx.strokeStyle=col; ctx.lineWidth=2.5; ctx.beginPath();
+  for(let i=0;i<=tot;i++){
+    const x=xm+(xM-xm)*(i/N), y=k/x;
+    if(y>10.5) continue;
+    i===0?ctx.moveTo(cx(x),cy(y)):ctx.lineTo(cx(x),cy(y));
+  }
+  ctx.stroke();
+}
+
+function icLabel(k,col,lbl){
+  const x=9.1, y=k/x; if(y>10.4) return;
+  ctx.fillStyle=col; ctx.font='bold 12px Space Mono'; ctx.textAlign='left';
+  ctx.fillText(lbl,cx(x)+4,cy(y)-4);
+}
+
+function drop(x,y){
+  ctx.strokeStyle='#1e1e1e'; ctx.lineWidth=1; ctx.setLineDash([4,4]);
+  ctx.beginPath(); ctx.moveTo(cx(x),cy(y)); ctx.lineTo(cx(x),cy(0)); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(cx(x),cy(y)); ctx.lineTo(cx(0),cy(y)); ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function pt(x,y,col,lbl,pos){
+  ctx.beginPath(); ctx.arc(cx(x),cy(y),5.5,0,Math.PI*2);
+  ctx.fillStyle=col; ctx.fill(); ctx.strokeStyle='#000'; ctx.lineWidth=2; ctx.stroke();
+  ctx.fillStyle=col; ctx.font='bold 13px Space Mono';
+  const o=11;
+  const positions={tr:[o,-o+4,'left'],tl:[-o,-o+4,'right'],br:[o,o+12,'left'],bl:[-o,o+12,'right']};
+  const [dx,dy,ta]=positions[pos||'tr'];
+  ctx.textAlign=ta; ctx.fillText(lbl,cx(x)+dx,cy(y)+dy);
+}
+
+function comp(p=1){
+  // parallel to B2 (slope -2), tangent to IC1 at E2=(3.536,7.071)
+  // line: y=-2x+14.142 → clipped x∈[1.6,6.5]
+  seg(1.6,10.92,6.5,0.14,GOLDL,[7,4],1.8,p);
+  if(p===1){
+    ctx.fillStyle=GOLDL; ctx.font='10px DM Sans'; ctx.textAlign='left';
+    ctx.fillText('compensated (dotted)',cx(2.8),cy(5.0)-12);
+  }
+}
+
+function arrow(x1,y1,x2,y2,col,lbl,side){
+  const ang=Math.atan2(cy(y2)-cy(y1),cx(x2)-cx(x1));
+  ctx.strokeStyle=col; ctx.lineWidth=2.5;
+  ctx.beginPath(); ctx.moveTo(cx(x1),cy(y1)); ctx.lineTo(cx(x2),cy(y2)); ctx.stroke();
+  ctx.save(); ctx.translate(cx(x2),cy(y2)); ctx.rotate(ang);
+  ctx.fillStyle=col; ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-11,-5); ctx.lineTo(-11,5); ctx.closePath(); ctx.fill();
+  ctx.restore();
+  const mx=(cx(x1)+cx(x2))/2, my=(cy(y1)+cy(y2))/2;
+  ctx.fillStyle=col; ctx.font='bold 11px DM Sans'; ctx.textAlign='center';
+  ctx.fillText(lbl,mx+(side==='r'?16:-16),my-10);
+}
+
+// ---- main render ----
+function render(at,ap){
+  ctx.clearRect(0,0,W,H);
+  axes();
+  if(D.bl||at==='bl')     bl(D.bl?1:ap);
+  if(D.ic1||at==='ic1')   { ic(25,TEAL,D.ic1?1:ap); if(D.ic1)icLabel(25,TEAL,'I₁'); }
+  if(D.e1||D.comp||D.se||D.ie||D.total){ drop(E1.x,E1.y); pt(E1.x,E1.y,TEAL,'E₁','tr'); }
+  if(D.comp||D.se||D.ie||D.total)       comp(1);
+  else if(at==='comp')    comp(ap);
+  if(D.comp||D.se||D.ie||D.total){ drop(E2.x,E2.y); pt(E2.x,E2.y,GOLDL,'E₂','tl'); }
+  if(D.se||D.ie||D.total) arrow(E1.x,E1.y,E2.x,E2.y,GREEN,'SE','r');
+  if(D.ie||D.total){
+    ic(12.5,PURPLE,1); icLabel(12.5,PURPLE,'I₂');
+    drop(E3.x,E3.y); pt(E3.x,E3.y,PURPLE,'E₃','br');
+    arrow(E2.x,E2.y,E3.x,E3.y,PURPLE,'IE','r');
+  }
+  if(D.total){
+    const yb=cy(0)+22;
+    ctx.strokeStyle=GOLD; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(cx(E1.x),yb); ctx.lineTo(cx(E3.x),yb); ctx.stroke();
+    ctx.fillStyle=GOLD;
+    [[cx(E1.x),1],[cx(E3.x),-1]].forEach(([bx,dir])=>{
+      ctx.beginPath(); ctx.moveTo(bx,yb); ctx.lineTo(bx+dir*10,yb-4); ctx.lineTo(bx+dir*10,yb+4); ctx.closePath(); ctx.fill();
+    });
+    ctx.fillStyle=GOLD; ctx.font='bold 11px DM Sans'; ctx.textAlign='center';
+    ctx.fillText('Total ↓ X demand',cx((E1.x+E3.x)/2),yb+16);
+  }
+  // E1 always on top
+  if(D.e1||D.comp||D.se||D.ie||D.total) pt(E1.x,E1.y,TEAL,'E₁','tr');
+}
+
+function animate(target,key,dur=750){
+  if(aid) cancelAnimationFrame(aid);
+  const t0=performance.now();
+  (function tick(now){
+    const p=ease(Math.min((now-t0)/dur,1));
+    render(target,p);
+    p<1?aid=requestAnimationFrame(tick):(D[key]=true,render(null,1));
+  })(t0);
+}
+
+// ---- steps ----
+const STEPS=[
+  {t:'Draw the axes',
+   x:'<strong>Good X</strong> on the horizontal axis, <strong>Good Y</strong> on the vertical. These are the two goods the consumer is choosing between.',
+   fn:()=>{ axes(); }},
+
+  {t:'Draw both budget lines',
+   x:'<strong>B₁</strong> is the original budget line. The price of Good X <em>rises</em> — B₂ pivots inward. The X-intercept moves <strong>left</strong>. The Y-intercept stays exactly the same — same income, same price of Y.',
+   fn:()=>animate('bl','bl',950)},
+
+  {t:'Draw I₁ — original indifference curve',
+   x:'I₁ is tangent to B₁ at <strong>E₁</strong>, placed in the middle of the diagram. Every point on I₁ gives the same total utility. The consumer reaches their highest possible curve on the original budget.',
+   fn:()=>animate('ic1','ic1',800)},
+
+  {t:'Mark E₁ — starting equilibrium',
+   x:'At E₁ the budget line just touches I₁. The MRS equals the price ratio — same bang per buck on both goods. No reason to reallocate spending.',
+   formula:'MUₓ / Pₓ  =  MUᵧ / Pᵧ',
+   fn:()=>{ D.e1=true; render(null,1); }},
+
+  {t:'Slide in the compensated budget line',
+   x:'Take a ruler, parallel to B₂, and slide it toward the origin until it just <em>touches</em> I₁. That tangency point is <strong>E₂</strong>. This isolates the pure substitution effect — same real satisfaction, new price ratio.',
+   fn:()=>animate('comp','comp',750)},
+
+  {t:'Substitution Effect: E₁ → E₂',
+   x:'Good X is now more expensive relative to Y. The consumer substitutes <em>away from X</em>. Movement along I₁ from E₁ to E₂. <strong>The substitution effect always moves against the price change — no exceptions.</strong>',
+   badge:'se',
+   fn:()=>{ D.se=true; render(null,1); }},
+
+  {t:'Income Effect: E₂ → E₃',
+   x:'The price rise reduces real purchasing power — the consumer is effectively <em>poorer</em>. They fall to a lower indifference curve I₂. Mark E₃ on B₂ and draw I₂ tangent there. Less Good X consumed again.',
+   badge:'ie',
+   fn:()=>{ D.ie=true; render(null,1); }},
+
+  {t:'Total Effect — demand falls',
+   x:'For a <strong>normal good</strong>: substitution effect ↓ X, income effect ↓ X further. Both point the same way. Price rises → demand falls. The demand curve slopes downward. ✓',
+   badge:'total',
+   fn:()=>{ D.total=true; render(null,1); }}
+];
+
+function panel(){
+  const s=STEPS[step];
+  document.getElementById('sLabel').textContent=`Step ${step+1} of ${STEPS.length}`;
+  document.getElementById('sTitle').textContent=s.t;
+  let h=`<p>${s.x}</p>`;
+  if(s.formula) h+=`<div class="formula">${s.formula}</div>`;
+  if(s.badge){
+    const map={
+      se:'<span class="badge b-se">E₁→E₂ Substitution ↓X</span>',
+      ie:'<span class="badge b-ie">E₂→E₃ Income ↓X</span>',
+      total:'<span class="badge b-se">SE ↓X</span> <span class="badge b-ie">IE ↓X</span> <span class="badge b-tot">Total ↓ Demand</span>'
+    };
+    h+=`<div class="badges">${map[s.badge]}</div>`;
+  }
+  document.getElementById('sText').innerHTML=h;
+  const pg=document.getElementById('prog'); pg.innerHTML='';
+  STEPS.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='dot'+(i<step?' done':'')+(i===step?' active':'');
+    pg.appendChild(d);
+  });
+  const btn=document.getElementById('btnNext');
+  btn.disabled=step>=STEPS.length-1;
+  btn.textContent=step>=STEPS.length-1?'✓ Complete':'Next →';
+}
+
+function doNext(){
+  if(step>=STEPS.length-1) return;
+  step++; panel(); STEPS[step].fn();
+}
+
+function doReset(){
+  step=0; D={bl:false,ic1:false,e1:false,comp:false,se:false,ie:false,total:false};
+  if(aid) cancelAnimationFrame(aid);
+  ctx.clearRect(0,0,W,H); axes(); panel();
+}
+
+// init
+panel(); axes();
+</script>
+</body>
+</html>
