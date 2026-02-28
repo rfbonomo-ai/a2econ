@@ -54,16 +54,18 @@ h1 span { color:var(--gold); font-style:italic; }
 .content-section .sub { font-size:14px; color:#999; margin-bottom:28px; line-height:1.7; max-width:640px; }
 
 /* diagram cards */
-.diagram-grid { display:grid; grid-template-columns:1fr; gap:2px; max-width:560px; }
+.diagram-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:2px; }
 
 .diagram-card {
   background:var(--bg2); border:1px solid var(--border);
-  overflow:hidden;
+  padding:28px; text-decoration:none; color:var(--text);
+  display:block; position:relative; transition:all .2s;
+  border-left:2px solid var(--gold-dim);
 }
-.diagram-card iframe {
-  width:100%; height:780px; border:none; display:block;
-  overflow:hidden;
-}
+.diagram-card:hover { background:var(--bg3); border-left-color:var(--gold); }
+.diagram-card-title { font-size:15px; font-weight:600; color:var(--text); margin-bottom:8px; }
+.diagram-card-sub { font-size:12px; color:var(--muted2); line-height:1.6; margin-bottom:20px; }
+.diagram-card-cta { font-family:'Space Mono',monospace; font-size:10px; color:var(--gold); letter-spacing:.08em; text-transform:uppercase; }
 .diagram-meta {
   padding:16px 20px; border-top:1px solid var(--border);
   display:flex; align-items:center; justify-content:space-between;
@@ -136,20 +138,16 @@ footer {
     <h2>Normal Good</h2>
     <p class="sub">For a normal good, both the substitution effect and income effect move in the same direction — reinforcing each other. A price fall increases demand; a price rise reduces it. The demand curve slopes downward.</p>
     <div class="diagram-grid">
-      <div class="diagram-card">
-        <iframe scrolling="no" src="diagrams/normal-good-price-fall.html" title="Normal Good — Price Fall"></iframe>
-        <div class="diagram-meta">
-          <span class="diagram-label">Normal Good — Price Fall</span>
-          <span class="diagram-type">Animated</span>
-        </div>
-      </div>
-      <div class="diagram-card">
-        <iframe scrolling="no" src="diagrams/normal-good-price-rise.html" title="Normal Good — Price Rise"></iframe>
-        <div class="diagram-meta">
-          <span class="diagram-label">Normal Good — Price Rise</span>
-          <span class="diagram-type">Animated</span>
-        </div>
-      </div>
+      <a href="diagrams/normal-good-price-fall.html" class="diagram-card" target="_blank">
+        <div class="diagram-card-title">Normal Good — Price Fall</div>
+        <div class="diagram-card-sub">Price of X falls. SE and IE both increase demand for X. Net effect: demand rises.</div>
+        <div class="diagram-card-cta">Open diagram →</div>
+      </a>
+      <a href="diagrams/normal-good-price-rise.html" class="diagram-card" target="_blank">
+        <div class="diagram-card-title">Normal Good — Price Rise</div>
+        <div class="diagram-card-sub">Price of X rises. SE and IE both reduce demand for X. Net effect: demand falls.</div>
+        <div class="diagram-card-cta">Open diagram →</div>
+      </a>
     </div>
   </div>
 
@@ -158,20 +156,16 @@ footer {
     <h2>Inferior Good</h2>
     <p class="sub">For an inferior good, the income effect works against the substitution effect — but the substitution effect wins. Demand still moves in the expected direction, just by less. Classic examples: own-brand staples, budget transport.</p>
     <div class="diagram-grid">
-      <div class="diagram-card">
-        <iframe scrolling="no" src="diagrams/inferior-good-price-fall.html" title="Inferior Good — Price Fall"></iframe>
-        <div class="diagram-meta">
-          <span class="diagram-label">Inferior Good — Price Fall</span>
-          <span class="diagram-type">Animated</span>
-        </div>
-      </div>
-      <div class="diagram-card">
-        <iframe scrolling="no" src="diagrams/inferior-good-price-rise.html" title="Inferior Good — Price Rise"></iframe>
-        <div class="diagram-meta">
-          <span class="diagram-label">Inferior Good — Price Rise</span>
-          <span class="diagram-type">Animated</span>
-        </div>
-      </div>
+      <a href="diagrams/inferior-good-price-fall.html" class="diagram-card" target="_blank">
+        <div class="diagram-card-title">Inferior Good — Price Fall</div>
+        <div class="diagram-card-sub">SE increases demand, IE reduces it. SE wins. Net effect: demand rises (but by less than normal good).</div>
+        <div class="diagram-card-cta">Open diagram →</div>
+      </a>
+      <a href="diagrams/inferior-good-price-rise.html" class="diagram-card" target="_blank">
+        <div class="diagram-card-title">Inferior Good — Price Rise</div>
+        <div class="diagram-card-sub">SE reduces demand, IE increases it. SE wins. Net effect: demand falls (but by less than normal good).</div>
+        <div class="diagram-card-cta">Open diagram →</div>
+      </a>
     </div>
   </div>
 
@@ -180,20 +174,16 @@ footer {
     <h2>Giffen Good</h2>
     <p class="sub">The Giffen paradox — the income effect is so powerful it completely overwhelms the substitution effect. A price fall reduces demand; a price rise increases it. The demand curve slopes upward. Theoretically fascinating, empirically extremely rare.</p>
     <div class="diagram-grid">
-      <div class="diagram-card">
-        <iframe scrolling="no" src="diagrams/giffen-good-price-fall.html" title="Giffen Good — Price Fall"></iframe>
-        <div class="diagram-meta">
-          <span class="diagram-label">Giffen Good — Price Fall</span>
-          <span class="diagram-type">Animated</span>
-        </div>
-      </div>
-      <div class="diagram-card">
-        <iframe scrolling="no" src="diagrams/giffen-good-price-rise.html" title="Giffen Good — Price Rise"></iframe>
-        <div class="diagram-meta">
-          <span class="diagram-label">Giffen Good — Price Rise</span>
-          <span class="diagram-type">Animated</span>
-        </div>
-      </div>
+      <a href="diagrams/giffen-good-price-fall.html" class="diagram-card" target="_blank">
+        <div class="diagram-card-title">Giffen Good — Price Fall</div>
+        <div class="diagram-card-sub">SE increases demand, IE reduces it massively. IE wins. Net effect: demand falls. Upward-sloping demand curve.</div>
+        <div class="diagram-card-cta">Open diagram →</div>
+      </a>
+      <a href="diagrams/giffen-good-price-rise.html" class="diagram-card" target="_blank">
+        <div class="diagram-card-title">Giffen Good — Price Rise</div>
+        <div class="diagram-card-sub">SE reduces demand, IE increases it massively. IE wins. Net effect: demand rises. Upward-sloping demand curve.</div>
+        <div class="diagram-card-cta">Open diagram →</div>
+      </a>
     </div>
   </div>
 
